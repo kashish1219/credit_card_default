@@ -1,0 +1,52 @@
+1. Bill-to-Limit Ratio
+
+        Idea: Measure how much of a customer’s credit limit is being used each month.
+
+        utilization = BILL_AMT / LIMIT_BAL per month.
+
+        High utilization (close to 100%) can indicate higher risk of default.
+
+        Approach:
+
+        Compute average utilization over 6 months.
+
+        Optionally, compute trend like bill_trend to see if utilization is increasing.
+
+        EDA Insight:
+
+        Bin the average utilization and calculate default rate per bin.
+
+        You’ll likely see higher default rates with higher utilization.
+
+2. Recent Payment Behavior
+
+        Idea: Recent repayment behavior can be a stronger signal than long-term trends.
+
+        Focus on PAY_0 (most recent month) and PAY_2 (month before).
+
+        Approach:
+
+        Compute a recent payment score (e.g., average of last 1–2 months).
+
+        Check correlation with DEFAULT or bin by recent payment status.
+
+        EDA Insight:
+
+        Customers who paid late recently are often at higher risk, even if their long-term trend is okay.
+
+3. Combined Categorical Analysis
+
+        Idea: Some categories interact — for example, sex and education together might reveal patterns not visible individually.
+
+        Approach:
+
+        Cross-tabulate default rate by combinations:
+
+        pd.crosstab([df['SEX'], df['EDUCATION']], df['DEFAULT'], normalize='index')
+
+
+        Or add MARRIAGE to see 3-way interactions.
+
+        EDA Insight:
+
+        Certain groups may have higher or lower default risk, which helps in feature creation.
